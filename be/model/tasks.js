@@ -1,15 +1,20 @@
 const mongoose = require("mongoose");
 
 const TaskShcema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    trim: true,
-    require: [true, "First Name is required"],
+  author: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+    required: true,
   },
-  lastName: {
+  title: {
     type: String,
     trim: true,
-    require: [true, "Last Name is required"],
+    require: [true, "title is required"],
+  },
+  content: {
+    type: String,
+    trim: true,
+    require: [true, "content is required"],
   },
 });
 
