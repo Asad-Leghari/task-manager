@@ -5,7 +5,7 @@
   "main": "be/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"nodemon be/app.js\" "
+    "dev": "concurrently \"cd be && npm run dev\" "
   },
   "author": "",
   "license": "ISC"
