@@ -8,8 +8,8 @@ const createTask = async (req, res) => {
   try {
     const data = req.body;
     const create_task = await Model.create(data);
-    const task = await create_task.save();
-    res.status(201).json(task);
+    // const task = await create_task.save();
+    res.status(201).json(createTask);
   } catch (error) {
     console.log(error);
     res.status(404).json("something went wrong");

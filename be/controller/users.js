@@ -14,8 +14,7 @@ const createUser = async (req, res) => {
       lastname: usernameArr[1],
       username: username,
     };
-    const create_user = await Model.create(data);
-    const user = await create_user.save();
+    const user = await Model.create(data);
     await res.status(201).json(user);
   } catch (error) {
     console.log(error);
