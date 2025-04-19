@@ -1,0 +1,12 @@
+{
+  "name": "task-manager",
+  "version": "1.0.0",
+  "description": "this is task manager app",
+  "main": "be/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"nodemon be/app.js\" "
+  },
+  "author": "",
+  "license": "ISC"
+}
