@@ -1,8 +1,13 @@
 const Model = require("../model/user");
 const username_generator = require("unique-username-generator");
 
-const allUsers = (req, res) => {
-  res.status(200).json("all users");
+const allUsers = async (req, res) => {
+  try {
+    const data = await Model.find({}).populate("tasks");
+    return await res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const createUser = async (req, res) => {
@@ -23,8 +28,8 @@ const createUser = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await Model.findById(id).populate("tasks");
+    const { username } = req.params;
+    const user = await Model.findOne({ username }).populate("tasks");
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
@@ -34,12 +39,26 @@ const getUser = async (req, res) => {
   }
 };
 
-const updateUser = (req, res) => {
+const updateUser = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const payload = req.body;
+    const data = await Model.updateOne({ username: username }, payload);
+    return res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+  }
   res.status(200).json("updated user");
 };
 
-const deleteUser = (req, res) => {
-  res.status(200).json("deleted user");
+const deleteUser = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const data = await Model.findOneAndDelete({ username });
+    return res.status(202).json(data);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = {

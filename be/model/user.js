@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Task = require("./tasks");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -25,6 +26,12 @@ UserSchema.virtual("tasks", {
   ref: "Task",
   localField: "_id",
   foreignField: "author",
+});
+
+// Add cascade delete for tasks when user is deleted
+UserSchema.post("findOneAndDelete", async function (res, next) {
+  await Task.deleteMany({ author: res._id });
+  next();
 });
 
 const User = mongoose.model("User", UserSchema);
