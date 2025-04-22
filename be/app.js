@@ -1,6 +1,7 @@
 const express = require("express");
 const TaskRoutes = require("./routes/tasks.js");
 const userRoutes = require("./routes/users.js");
+const authRoutes = require("./routes/auth.js");
 const conn = require("./db/connect.js");
 require("dotenv").config();
 
@@ -9,6 +10,8 @@ app.use(express.json());
 
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/tasks", TaskRoutes);
+app.use("/api/v1/auth", authRoutes);
+
 app.get("/", function (req, res) {
   res.send("hello world");
 });

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Task = require("./tasks");
+const argon2 = require("argon2");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -14,6 +15,11 @@ const UserSchema = new mongoose.Schema(
       require: [true, "Last Name is required"],
     },
     username: {
+      type: String,
+      unique: true,
+      require: true,
+    },
+    password: {
       type: String,
       require: true,
     },
@@ -32,6 +38,22 @@ UserSchema.virtual("tasks", {
 UserSchema.post("findOneAndDelete", async function (res, next) {
   await Task.deleteMany({ author: res._id });
   next();
+});
+
+UserSchema.pre("save", async function (next, opt) {
+  // Only hash password if it was modified
+  if (!this.isModified("password")) {
+    return next();
+  }
+
+  try {
+    // Hash password using argon2
+    const hashedPassword = await argon2.hash(this.password);
+    this.password = hashedPassword;
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 const User = mongoose.model("User", UserSchema);
