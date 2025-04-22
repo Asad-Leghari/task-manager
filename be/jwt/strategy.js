@@ -1,8 +1,23 @@
-var passport = require("passport");
-var LocalStrategy = require("passport-local");
-
+const userModel = require("../model/user");
+var JwtStrategy = require("passport-jwt").Strategy,
+  ExtractJwt = require("passport-jwt").ExtractJwt;
+var opts = {};
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = process.env.JWT_SECRET;
+opts.issuer = "accounts.examplesoft.com";
+opts.audience = "yoursite.net";
 passport.use(
-  new LocalStrategy(function verify(username, password, cb) {
-    return true;
+  new JwtStrategy(opts, function (jwt_payload, done) {
+    User.findOne({ username: jwt_payload.sub }, function (err, user) {
+      if (err) {
+        return done(err, false);
+      }
+      if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false);
+        // or you could create a new account
+      }
+    });
   })
 );
