@@ -29,7 +29,9 @@ const createUser = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const { username } = req.params;
-    const user = await Model.findOne({ username }).populate("tasks");
+    const user = await Model.findOne({ username }, { password: 0 }).populate(
+      "tasks"
+    );
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
@@ -61,8 +63,8 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const { username } = req.params;
-    const data = await Model.findOneAndDelete({ username });
+    const { username } = req.user;
+    const data = await Model.findOneAndDelete({ username }, { password: 0 });
     return res.status(202).json(data);
   } catch (error) {
     console.log(error);
