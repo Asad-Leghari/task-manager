@@ -41,9 +41,9 @@ const getUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const { username } = req.params;
     const payload = req.body;
-    const data = await Model.updateOne({ username: username }, payload);
+    const user = req.user;
+    const data = await Model.updateOne({ username: user.username }, payload);
     return res.status(200).json(data);
   } catch (error) {
     console.log(error);
