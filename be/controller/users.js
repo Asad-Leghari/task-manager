@@ -3,7 +3,7 @@ const username_generator = require("unique-username-generator");
 
 const allUsers = async (req, res) => {
   try {
-    const data = await Model.find({}).populate("tasks");
+    const data = await Model.find({}, { password: 0 }).populate("tasks");
     return await res.status(200).json(data);
   } catch (error) {
     console.log(error);
