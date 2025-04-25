@@ -47,8 +47,16 @@ const updateUser = async (req, res) => {
     return res.status(200).json(data);
   } catch (error) {
     console.log(error);
+    if (error.code === 11000) {
+      res.status(400).json({
+        error: `${Object.keys(error.keyValue)[0]}: ${
+          error.keyValue[Object.keys(error.keyValue)[0]]
+        } already exists`,
+      });
+    } else {
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
-  res.status(200).json("updated user");
 };
 
 const deleteUser = async (req, res) => {

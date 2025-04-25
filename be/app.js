@@ -17,7 +17,11 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   userRoutes
 );
-app.use("/api/v1/tasks", TaskRoutes);
+app.use(
+  "/api/v1/tasks",
+  passport.authenticate("jwt", { session: false }),
+  TaskRoutes
+);
 app.use("/api/v1/auth", authRoutes);
 
 app.get("/", function (req, res) {
