@@ -7,7 +7,13 @@ const getAllTasks = (req, res) => {
 const createTask = async (req, res) => {
   try {
     const data = req.body;
-    const create_task = await Model.create(data);
+    const userID = req.user.id;
+    if (data.author) {
+      return res.status(401).json({
+        forbidden: "you do not have access ",
+      });
+    }
+    const create_task = await Model.create({ author: userID, ...data });
     res.status(201).json(create_task);
   } catch (error) {
     console.log(error);
@@ -15,8 +21,12 @@ const createTask = async (req, res) => {
   }
 };
 
-const getSingleTask = (req, res) => {
-  res.status(200).json("hello");
+const getSingleTask = async (req, res) => {
+  try {
+    const singletask = await Model.findOne();
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const deleteTask = (req, res) => {
