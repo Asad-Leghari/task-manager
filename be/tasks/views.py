@@ -11,6 +11,5 @@ class ListTasks(ListCreateAPIView):
     queryset = Task.objects.all()
 
 class DetailTasks(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
