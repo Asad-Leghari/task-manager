@@ -1,0 +1,16 @@
+# rest framework imports
+from .models import Task
+from .serializers import TaskSerializer
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import IsAuthenticated
+
+# Create your views here.
+
+class ListTasks(ListCreateAPIView):
+    serializer_class = TaskSerializer
+    queryset = Task.objects.all()
+
+class DetailTasks(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TaskSerializer
+    queryset = Task.objects.all()
