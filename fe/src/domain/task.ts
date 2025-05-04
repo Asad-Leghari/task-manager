@@ -1,9 +1,4 @@
-export type ICreateTaskForm = {
-  title: string;
-  description: string;
-};
-
-export type ITaskDto = {
+export type ITask = {
   id: number;
   author: {
     first_name: string;

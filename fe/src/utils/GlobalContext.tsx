@@ -1,5 +1,6 @@
 import React, { createContext, useState } from "react";
 import { IUser } from "../domain/user";
+import { ITask } from "../domain";
 
 type IGlobalCxt = {
   theme: {
@@ -10,6 +11,10 @@ type IGlobalCxt = {
     user: null | IUser;
     setUser?: React.Dispatch<React.SetStateAction<IUser | null>>;
   };
+  tasks: {
+    AllTasks: ITask[];
+    setAllTasks?: React.Dispatch<React.SetStateAction<ITask[]>>;
+  };
 };
 
 export const GlobalCxt = createContext<IGlobalCxt>({
@@ -19,11 +24,15 @@ export const GlobalCxt = createContext<IGlobalCxt>({
   user: {
     user: null,
   },
+  tasks: {
+    AllTasks: [],
+  },
 });
 
 const GlobalContext = ({ children }: { children: React.ReactNode }) => {
   const [ActiveTheme, setActiveTheme] = useState<"light" | "dark">("dark");
   const [User, setUser] = useState<IUser | null>(null);
+  const [AllTasks, setAllTasks] = useState<ITask[]>([]);
 
   const value = {
     theme: {
@@ -33,6 +42,10 @@ const GlobalContext = ({ children }: { children: React.ReactNode }) => {
     user: {
       user: User,
       setUser: setUser,
+    },
+    tasks: {
+      AllTasks,
+      setAllTasks,
     },
   };
 

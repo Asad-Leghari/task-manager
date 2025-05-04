@@ -19,9 +19,12 @@ const CreateTasks = () => {
   };
 
   const handleClick = async () => {
+    if (!TaskForm.title || !TaskForm.description)
+      return setError("title or description cannot be empty");
     try {
       setLoading(true);
-      const res = await taskApis.createTask(TaskForm);
+      await taskApis.createTask(TaskForm);
+      setTaskForm({ title: "", description: "" });
       setSuccess("task created successfully");
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
@@ -61,6 +64,7 @@ const CreateTasks = () => {
           label="Title"
           name="title"
           fullWidth
+          value={TaskForm.title}
           onChange={(e) => handleChange(e)}
         />
         <TextField
@@ -71,6 +75,7 @@ const CreateTasks = () => {
           multiline
           minRows={3}
           maxRows={6}
+          value={TaskForm.description}
           onChange={(e) => handleChange(e)}
         />
         {Success && (
