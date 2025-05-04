@@ -10,6 +10,9 @@ class ListTasks(ListCreateAPIView):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
 
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
 class DetailTasks(RetrieveUpdateDestroyAPIView):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
