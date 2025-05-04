@@ -2,8 +2,11 @@ import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import taskApis from "../../infrastructure/tasks/api";
+import useGlobalCxt from "../../hooks/useGlobalCxt";
+import { ITask } from "../../domain";
 
 const CreateTasks = () => {
+  const { tasks } = useGlobalCxt();
   const [TaskForm, setTaskForm] = useState({ title: "", description: "" });
   const [Loading, setLoading] = useState(false);
   const [Error, setError] = useState("");
@@ -23,7 +26,16 @@ const CreateTasks = () => {
       return setError("title or description cannot be empty");
     try {
       setLoading(true);
-      await taskApis.createTask(TaskForm);
+      const res = await taskApis.createTask(TaskForm);
+      const newTask: ITask = {
+        id: res.id,
+        author: res.author,
+        title: res.title,
+        description: res.description,
+      };
+      if (tasks.setAllTasks) {
+        tasks.setAllTasks((prev) => [...prev, newTask]);
+      }
       setTaskForm({ title: "", description: "" });
       setSuccess("task created successfully");
     } catch (error: unknown) {
