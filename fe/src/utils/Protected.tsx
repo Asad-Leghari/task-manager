@@ -14,9 +14,6 @@ const Protected = ({ children }: { children: React.ReactNode }) => {
     } else {
       setLoading(false);
     }
-  }, []);
-
-  useEffect(() => {
     const user_s = localStorage.getItem("user");
     if (!user.user && user.setUser && user_s) {
       user.setUser(JSON.parse(user_s));
