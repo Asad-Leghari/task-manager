@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { IUser } from "../domain/types";
+import { IUser } from "../domain/user";
 
 type IGlobalCxt = {
   theme: {
