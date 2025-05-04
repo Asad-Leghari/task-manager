@@ -6,14 +6,19 @@ type IGlobalCxt = {
     ActiveTheme: "light" | "dark";
     setActiveTheme?: React.Dispatch<React.SetStateAction<"light" | "dark">>;
   };
-  user: null | IUser;
+  user: {
+    user: null | IUser;
+    setUser?: React.Dispatch<React.SetStateAction<IUser | null>>;
+  };
 };
 
 export const GlobalCxt = createContext<IGlobalCxt>({
   theme: {
     ActiveTheme: "dark",
   },
-  user: null,
+  user: {
+    user: null,
+  },
 });
 
 const GlobalContext = ({ children }: { children: React.ReactNode }) => {
@@ -25,8 +30,12 @@ const GlobalContext = ({ children }: { children: React.ReactNode }) => {
       ActiveTheme,
       setActiveTheme,
     },
-    user: User,
+    user: {
+      user: User,
+      setUser: setUser,
+    },
   };
+
   return <GlobalCxt.Provider value={value}>{children}</GlobalCxt.Provider>;
 };
 

@@ -13,9 +13,14 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { IRegisterForm } from "../../domain";
+import authApis from "../../infrastructure/auth/api";
+import useGlobalCxt from "../../hooks/useGlobalCxt";
+import { useNavigate } from "react-router";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [Loading, setLoading] = useState(false);
   const [RegisterForm, setRegisterForm] = useState<IRegisterForm>({
     first_name: "",
     last_name: "",
@@ -23,6 +28,7 @@ const Register = () => {
     password: "",
     confirm_password: "",
   });
+  const { user } = useGlobalCxt();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -32,7 +38,7 @@ const Register = () => {
       [e.target.name]: e.target.value,
     });
   };
-  const handleRegister = () => {
+  const handleRegister = async () => {
     switch ("") {
       case RegisterForm.first_name: {
         return alert("first name cannot be empty");
@@ -52,6 +58,26 @@ const Register = () => {
     }
     if (RegisterForm.password !== RegisterForm.confirm_password)
       return alert("passwords should match");
+    try {
+      setLoading(true);
+      const res = await authApis.register({
+        first_name: RegisterForm.first_name,
+        last_name: RegisterForm.last_name,
+        username: RegisterForm.username,
+        password: RegisterForm.password,
+      });
+      localStorage.setItem("access", res.access);
+      localStorage.setItem("refresh", res.refresh);
+      localStorage.setItem("user", JSON.stringify(res.user));
+      if (user.setUser) {
+        user.setUser(res.user);
+      }
+      navigate("/home");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <Grid
@@ -149,7 +175,7 @@ const Register = () => {
             }
           />
         </FormControl>
-        <Button variant="contained" onClick={handleRegister}>
+        <Button variant="contained" onClick={handleRegister} disabled={Loading}>
           Register
         </Button>
       </Paper>

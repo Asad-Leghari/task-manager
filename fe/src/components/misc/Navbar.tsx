@@ -74,9 +74,8 @@ function Navbar() {
           >
             LOGO
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            {user ? (
+            {user.user ? (
               <>
                 <IconButton
                   size="large"
@@ -166,7 +165,7 @@ function Navbar() {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {user ? (
+            {user.user ? (
               <>
                 {authPages.map((page) => (
                   <Button
@@ -193,7 +192,7 @@ function Navbar() {
             )}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            {user ? (
+            {user.user ? (
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>

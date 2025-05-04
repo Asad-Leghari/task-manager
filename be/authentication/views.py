@@ -15,7 +15,9 @@ class Register(CreateAPIView):
     def create(self, request, *args, **kwargs):
         super().create(request, *args, **kwargs)
         user = User.objects.filter(username=request.data.get('username'))
+        s = UserSerializer(user.first())
         data = {
+            "user": s.data,
             "access": str(AccessToken.for_user(user.first())),
             "refresh": str(RefreshToken.for_user(user.first()))
         }
